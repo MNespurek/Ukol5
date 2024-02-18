@@ -1,3 +1,5 @@
+package com.engeto.plantProject;
+
 import com.engeto.plantProject.PlantException;
 
 import java.time.LocalDate;
