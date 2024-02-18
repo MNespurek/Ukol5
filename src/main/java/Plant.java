@@ -1,3 +1,5 @@
+import com.engeto.plantProject.PlantException;
+
 import java.time.LocalDate;
 
 public class Plant {
@@ -7,22 +9,22 @@ public class Plant {
     private LocalDate watering;
     private int frequencyOfWatering;
 
-    public Plant(String name, String notes, LocalDate planted, LocalDate watering, int frequencyOfWatering) {
+    public Plant(String name, String notes, LocalDate planted, LocalDate watering, int frequencyOfWatering) throws PlantException {
         this.name = name;
         this.notes = notes;
         this.planted = planted;
-        this.watering = watering;
-        this.frequencyOfWatering = frequencyOfWatering;
+        setWatering(watering);
+        setFrequencyOfWatering(frequencyOfWatering);
     }
 
-    public Plant(String name, LocalDate planted, int frequencyOfWatering) {
+    public Plant(String name, LocalDate planted, int frequencyOfWatering) throws PlantException {
         this(name, "", planted, LocalDate.now(),frequencyOfWatering);
     }
-    public Plant(String name) {
+    public Plant(String name) throws PlantException{
         this(name,"", LocalDate.now(), LocalDate.now(), 7 );
     }
 
-    public void getWateringInfo() {
+    public void getWateringInfo() throws PlantException {
         LocalDate nextWatering = LocalDate.now().plusDays(getFrequencyOfWatering());
         System.out.println("Název rostliny: "+getName()+", datum poslední zálivky: "+getWatering()+ ", datum další zálivky: "+nextWatering+".");
     }
@@ -55,7 +57,10 @@ public class Plant {
         return watering;
     }
 
-    public void setWatering(LocalDate watering) {
+    public void setWatering(LocalDate watering) throws PlantException {
+        if(watering.isBefore(getPlanted())) {
+            throw new PlantException("Datum poslední zálivky je před datem zasazení rostliny "+watering+ "!");
+        }
         this.watering = watering;
     }
 
@@ -63,7 +68,10 @@ public class Plant {
         return frequencyOfWatering;
     }
 
-    public void setFrequencyOfWatering(int frequencyOfWatering) {
+    public void setFrequencyOfWatering(int frequencyOfWatering) throws PlantException {
+        if(frequencyOfWatering <= 0) {
+            throw new PlantException("Nevalidní nastavení počtu dnů pro zálivku " +frequencyOfWatering+ ".");
+        }
         this.frequencyOfWatering = frequencyOfWatering;
     }
 }
