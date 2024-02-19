@@ -2,9 +2,7 @@ package com.engeto.plantProject;
 
 import java.io.*;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class ListOfPlants {
     private List<Plant> plantList;
@@ -69,6 +67,37 @@ public class ListOfPlants {
         catch (IOException e) {
             throw new PlantException("Chyba při načítání souboru "+fileName+"\n"+e.getLocalizedMessage()+".");
         }
+    }
+
+    public List<Plant> plantListSortedByName(List<Plant> plantList) {
+        new ArrayList<>(plantList);
+        Collections.sort(plantList, new Comparator<Plant>() {
+            @Override
+            public int compare(Plant plant1, Plant plant2) {
+                return plant1.getName().compareTo(plant2.getName());
+            }
+        });
+
+        return plantList;
+    }
+
+    public List<Plant> platListSrotedByGetWatering(List<Plant> plantList) {
+        new ArrayList<>(plantList);
+
+        Collections.sort(plantList, new Comparator<Plant>() {
+            @Override
+            public int compare(Plant plant1, Plant plant2) {
+                if (plant1.getWatering().isBefore(plant2.getWatering())) {
+                    return -1;
+
+                }
+                if (plant1.getWatering().isAfter(plant2.getWatering())) {
+                    return 1;
+                }
+                return 0;
+            }
+        });
+        return plantList;
     }
 }
 
