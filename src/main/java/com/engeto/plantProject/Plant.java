@@ -1,8 +1,7 @@
 package com.engeto.plantProject;
 
-import com.engeto.plantProject.PlantException;
-
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 
 public class Plant {
     private String name;
@@ -27,7 +26,9 @@ public class Plant {
     }
 
     public void getWateringInfo() throws PlantException {
-        LocalDate nextWatering = LocalDate.now().plusDays(getFrequencyOfWatering());
+        int differentNowAndGetPlanted = (int) ChronoUnit.DAYS.between(getPlanted(), LocalDate.now());
+        int daysForNextWatering = differentNowAndGetPlanted % getFrequencyOfWatering();
+        LocalDate nextWatering = LocalDate.now().plusDays(daysForNextWatering);
         System.out.println("Název rostliny: "+getName()+", datum poslední zálivky: "+getWatering()+ ", datum další zálivky: "+nextWatering+".");
     }
 
@@ -75,5 +76,16 @@ public class Plant {
             throw new PlantException("Nevalidní nastavení počtu dnů pro zálivku " +frequencyOfWatering+ ".");
         }
         this.frequencyOfWatering = frequencyOfWatering;
+    }
+
+    @Override
+    public String toString() {
+        return "Rostlina" +
+                "název = '" + name + '\'' +
+                ", poznámka = '" + notes + '\'' +
+                ", zasazení = " + planted +
+                ", datum poslední zálivky = " + watering +
+                ", interval zalévání = " + frequencyOfWatering +
+                '\n';
     }
 }
