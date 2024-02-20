@@ -45,6 +45,7 @@ public class ListOfPlants {
                 int frequencyOfWatering = Integer.parseInt(splitPlantLine[4]);
                 Plant plant = new Plant(name, note, planted, watering, frequencyOfWatering);
                 plantList.add(plant);
+
             }
         } catch (FileNotFoundException e) {
             throw new PlantException("Soubor "+fileName+ "nebyl nalezen" +e.getLocalizedMessage()+ ".");
@@ -69,7 +70,7 @@ public class ListOfPlants {
         }
     }
 
-    public List<Plant> plantListSortedByName(List<Plant> plantList) {
+    public List<Plant> plantListSortedByName() {
         new ArrayList<>(plantList);
         Collections.sort(plantList, new Comparator<Plant>() {
             @Override
@@ -81,18 +82,18 @@ public class ListOfPlants {
         return plantList;
     }
 
-    public List<Plant> platListSrotedByGetWatering(List<Plant> plantList) {
+    public List<Plant> platListSrotedByGetWatering() {
         new ArrayList<>(plantList);
 
         Collections.sort(plantList, new Comparator<Plant>() {
             @Override
             public int compare(Plant plant1, Plant plant2) {
                 if (plant1.getWatering().isBefore(plant2.getWatering())) {
-                    return -1;
+                    return 1;
 
                 }
                 if (plant1.getWatering().isAfter(plant2.getWatering())) {
-                    return 1;
+                    return -1;
                 }
                 return 0;
             }
